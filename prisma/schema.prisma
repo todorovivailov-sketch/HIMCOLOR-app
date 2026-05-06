@@ -88,6 +88,9 @@ model Recipe {
   status       String         @default("ACTIVE")
   validFrom    DateTime
   baseOutputKg Decimal        @default(1000)
+  pailOutputKg Decimal        @default(1000)
+  containerOutputKg Decimal   @default(1000)
+  legacyOverheadRate Decimal  @default(0)
   note         String?
   items        RecipeItem[]
   snapshots    CostSnapshot[]

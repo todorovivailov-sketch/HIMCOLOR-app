@@ -15,8 +15,11 @@ export async function loadProductCosts() {
   return recipes.map((recipe) => {
     const cost = calculateRecipeCost({
       baseOutputKg: Number(recipe.baseOutputKg),
+      pailOutputKg: Number(recipe.pailOutputKg),
+      containerOutputKg: Number(recipe.containerOutputKg),
       adminCostPerKgEur: 0,
       pailNetKg: 26,
+      legacyOverheadRate: Number(recipe.legacyOverheadRate),
       items: recipe.items.map((item) => ({
         name: item.material.name,
         category: item.material.category as CostMaterialCategory,

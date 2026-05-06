@@ -16,17 +16,20 @@ describe("calculateRecipeCost", () => {
     });
 
     expect(result.materialCostPerKgEur).toBeCloseTo(0.6772, 4);
-    expect(result.pailPackagingPerKgEur).toBeCloseTo(0.119615, 6);
+    expect(result.pailPackagingPerKgEur).toBeCloseTo(0.00311, 6);
     expect(result.containerPackagingPerKgEur).toBe(0);
-    expect(result.pailTotalPerKgEur).toBeCloseTo(0.796815, 6);
+    expect(result.pailTotalPerKgEur).toBeCloseTo(0.68031, 6);
     expect(result.containerTotalPerKgEur).toBeCloseTo(0.6772, 4);
   });
 
-  it("adds administrative cost equally to pail and container totals", () => {
+  it("adds legacy percentage overhead and real administrative cost to totals", () => {
     const result = calculateRecipeCost({
       baseOutputKg: 1000,
+      pailOutputKg: 1000,
+      containerOutputKg: 1000,
       adminCostPerKgEur: 0.18,
       pailNetKg: 26,
+      legacyOverheadRate: 0.2,
       items: [
         { name: "СУРОВИНА", category: "RAW", quantityKg: 1000, priceEur: 1, includeInPail: true, includeInContainer: true },
         { name: "БАКА", category: "PACKAGING", quantityKg: 1, priceEur: 2.6, includeInPail: true, includeInContainer: false },
@@ -34,8 +37,9 @@ describe("calculateRecipeCost", () => {
     });
 
     expect(result.materialCostPerKgEur).toBe(1);
-    expect(result.pailPackagingPerKgEur).toBeCloseTo(0.1, 6);
-    expect(result.pailTotalPerKgEur).toBeCloseTo(1.28, 6);
-    expect(result.containerTotalPerKgEur).toBeCloseTo(1.18, 6);
+    expect(result.pailPackagingPerKgEur).toBeCloseTo(0.0026, 6);
+    expect(result.pailLegacyOverheadPerKgEur).toBeCloseTo(0.20052, 6);
+    expect(result.pailTotalPerKgEur).toBeCloseTo(1.38312, 6);
+    expect(result.containerTotalPerKgEur).toBeCloseTo(1.38, 6);
   });
 });

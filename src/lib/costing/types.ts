@@ -11,8 +11,11 @@ export type RecipeCostItem = {
 
 export type RecipeCostInput = {
   baseOutputKg: number;
+  pailOutputKg?: number;
+  containerOutputKg?: number;
   adminCostPerKgEur: number;
   pailNetKg: number;
+  legacyOverheadRate?: number;
   items: RecipeCostItem[];
 };
 
@@ -21,6 +24,8 @@ export type RecipeCostResult = {
   pailPackagingPerKgEur: number;
   containerPackagingPerKgEur: number;
   adminCostPerKgEur: number;
+  pailLegacyOverheadPerKgEur: number;
+  containerLegacyOverheadPerKgEur: number;
   pailTotalPerKgEur: number;
   containerTotalPerKgEur: number;
 };

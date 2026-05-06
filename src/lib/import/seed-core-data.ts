@@ -83,6 +83,9 @@ export async function seedCoreDataFromExcel(workbookPath: string) {
         status: "ACTIVE",
         validFrom,
         baseOutputKg: recipe.baseOutputKg,
+        pailOutputKg: recipe.pailOutputKg,
+        containerOutputKg: recipe.containerOutputKg,
+        legacyOverheadRate: recipe.legacyOverheadRate,
         note: "Начална рецепта от Excel файл",
       },
       create: {
@@ -91,6 +94,9 @@ export async function seedCoreDataFromExcel(workbookPath: string) {
         status: "ACTIVE",
         validFrom,
         baseOutputKg: recipe.baseOutputKg,
+        pailOutputKg: recipe.pailOutputKg,
+        containerOutputKg: recipe.containerOutputKg,
+        legacyOverheadRate: recipe.legacyOverheadRate,
         note: "Начална рецепта от Excel файл",
       },
     });

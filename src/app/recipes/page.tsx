@@ -1,6 +1,7 @@
 import { DataTable } from "@/components/data-table";
 import { PageHeader } from "@/components/page-header";
 import { db } from "@/lib/db";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +27,11 @@ export default async function RecipesPage() {
           { key: "status", label: "Статус" },
         ]}
         rows={recipes.map((recipe) => ({
-          product: recipe.product.name,
+          product: (
+            <Link className="font-medium text-accent hover:underline" href={`/recipes/${recipe.id}`}>
+              {recipe.product.name}
+            </Link>
+          ),
           version: recipe.version,
           items: recipe.items.length,
           base: Number(recipe.baseOutputKg).toFixed(0),
