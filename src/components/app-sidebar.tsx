@@ -17,6 +17,7 @@ const navItems = [
   { href: "/", label: "Табло", icon: Home },
   { href: "/production", label: "Производство", icon: Factory },
   { href: "/products", label: "Продукти и рецепти", icon: Package },
+  { href: "/costs", label: "Себестойности", icon: BarChart3 },
   { href: "/materials", label: "Материали и склад", icon: Boxes },
   { href: "/sales", label: "Продажби и клиенти", icon: ShoppingCart },
   { href: "/purchases", label: "Покупки и доставчици", icon: Truck },
