@@ -11,8 +11,8 @@ type DataTableProps = {
 
 export function DataTable({ columns, rows }: DataTableProps) {
   return (
-    <div className="overflow-hidden rounded-md border border-line bg-white">
-      <table className="w-full border-collapse text-sm">
+    <div className="overflow-x-auto rounded-md border border-line bg-white">
+      <table className="min-w-[760px] w-full border-collapse text-sm">
         <thead className="bg-[#E7DFCF] text-left">
           <tr>
             {columns.map((column) => (
