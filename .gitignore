@@ -20,6 +20,7 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Local databases and uploads
+*.db
 *.sqlite
 *.sqlite3
 uploads/
