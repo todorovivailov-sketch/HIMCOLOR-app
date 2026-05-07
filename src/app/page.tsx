@@ -1,10 +1,22 @@
-export default function DashboardPage() {
+import { db } from "@/lib/db";
+import { KpiCard } from "@/components/kpi-card";
+import { PageHeader } from "@/components/page-header";
+
+export default async function DashboardPage() {
+  const [materials, products, recipes] = await Promise.all([
+    db.material.count(),
+    db.product.count(),
+    db.recipe.count(),
+  ]);
+
   return (
-    <main className="min-h-screen p-8">
-      <h1 className="text-2xl font-semibold">Himcolor App</h1>
-      <p className="mt-2 text-sm text-neutral-700">
-        Работно табло за материали, рецепти и себестойности.
-      </p>
-    </main>
+    <>
+      <PageHeader title="Табло" description="Обзор на основните данни в Himcolor App." />
+      <div className="grid grid-cols-3 gap-4">
+        <KpiCard label="Материали" value={String(materials)} detail="Суровини и опаковки" />
+        <KpiCard label="Продукти" value={String(products)} detail="Активни и архивни" />
+        <KpiCard label="Рецепти" value={String(recipes)} detail="Версии в системата" />
+      </div>
+    </>
   );
 }
