@@ -14,5 +14,11 @@ describe("parseHimcolorWorkbook", () => {
 
     const whiteRecipe = result.recipes.find((recipe) => recipe.productName === "БПМ БЯЛА");
     expect(whiteRecipe?.items.some((item) => item.materialName === "СМОЛА" && item.quantityKg === 190)).toBe(true);
+    // 39 баки × 26 кг = 1014 кг базов тонаж
+    expect(whiteRecipe?.baseOutputKg).toBe(1014);
+
+    const citiRecipe = result.recipes.find((recipe) => recipe.productName === "БПМ СИТИ");
+    // 40 баки × 26 кг = 1040 кг
+    expect(citiRecipe?.baseOutputKg).toBe(1040);
   });
 });

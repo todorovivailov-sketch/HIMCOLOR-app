@@ -132,10 +132,14 @@ export function parseHimcolorWorkbook(workbookPath: string): ParsedWorkbook {
       }
     }
 
+    // baseOutputKg = n_баки × 26 kg/бака (actual batch that fills the баки)
+    const bailRow = items.find((i) => i.materialName.toUpperCase() === "БАКИ");
+    const baseOutputKg = bailRow ? bailRow.quantityKg * 26 : 1000;
+
     recipes.push({
       productName,
       version: 1,
-      baseOutputKg: 1000,
+      baseOutputKg,
       items,
     });
   }
