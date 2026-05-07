@@ -23,7 +23,7 @@ export function calculateRecipeCost(input: RecipeCostInput): RecipeCostResult {
     .reduce((sum, item) => sum + item.quantityKg * item.priceEur, 0);
 
   const materialCostPerKgEur = roundMoney(materialTotal / input.baseOutputKg);
-  const pailPackagingPerKgEur = roundMoney(pailPackagingTotal / input.pailNetKg);
+  const pailPackagingPerKgEur = roundMoney(pailPackagingTotal / input.baseOutputKg);
   const containerPackagingPerKgEur = roundMoney(containerPackagingTotal / input.baseOutputKg);
   const adminCostPerKgEur = roundMoney(input.adminCostPerKgEur);
 
