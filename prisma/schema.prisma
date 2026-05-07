@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Supplier {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  vatNumber String?
+  contact   String?
+  phone     String?
+  email     String?
+  address   String?
+  notes     String?
+  materials Material[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Material {
+  id                  String          @id @default(cuid())
+  name                String          @unique
+  category            String
+  unit                String          @default("kg")
+  currentPriceEur     Decimal         @default(0)
+  weightedAvgPriceEur Decimal         @default(0)
+  stockQuantity       Decimal         @default(0)
+  minStockQuantity    Decimal?
+  supplierId          String?
+  supplier            Supplier?       @relation(fields: [supplierId], references: [id])
+  prices              MaterialPrice[]
+  recipeItems         RecipeItem[]
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+}
+
+model MaterialPrice {
+  id         String   @id @default(cuid())
+  materialId String
+  material   Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+  priceEur   Decimal
+  validFrom  DateTime
+  supplierId String?
+  note       String?
+  createdAt  DateTime @default(now())
+
+  @@index([materialId, validFrom])
+}
+
+model Product {
+  id                String             @id @default(cuid())
+  name              String             @unique
+  category          String?
+  unit              String             @default("kg")
+  active            Boolean            @default(true)
+  notes             String?
+  recipes           Recipe[]
+  packagingVariants PackagingVariant[]
+  costSnapshots     CostSnapshot[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model PackagingVariant {
+  id               String   @id @default(cuid())
+  productId        String
+  product          Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name             String
+  kind             String
+  netKg            Decimal?
+  includePackaging Boolean  @default(false)
+  active           Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([productId, name])
+}
+
+model Recipe {
+  id           String         @id @default(cuid())
+  productId    String
+  product      Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  version      Int
+  status       String         @default("ACTIVE")
+  validFrom    DateTime
+  baseOutputKg Decimal        @default(1000)
+  note         String?
+  items        RecipeItem[]
+  snapshots    CostSnapshot[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@unique([productId, version])
+  @@index([productId, status])
+}
+
+model RecipeItem {
+  id                 String   @id @default(cuid())
+  recipeId           String
+  recipe             Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  materialId         String
+  material           Material @relation(fields: [materialId], references: [id])
+  quantityKg         Decimal
+  includeInContainer Boolean  @default(true)
+  includeInPail      Boolean  @default(true)
+  sortOrder          Int
+
+  @@index([recipeId])
+  @@index([materialId])
+}
+
+model CostSnapshot {
+  id                         String   @id @default(cuid())
+  productId                  String
+  product                    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  recipeId                   String
+  recipe                     Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  calculatedAt               DateTime @default(now())
+  materialCostPerKgEur       Decimal
+  pailPackagingPerKgEur      Decimal
+  containerPackagingPerKgEur Decimal
+  adminCostPerKgEur          Decimal  @default(0)
+  pailTotalPerKgEur          Decimal
+  containerTotalPerKgEur     Decimal
+}
